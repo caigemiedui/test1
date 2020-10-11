@@ -1,0 +1,20 @@
+public static void initDigitsMap(){
+        digitsMap=new HashMap<>();
+        digitsMap.put("0",Arrays.asList(""));
+        digitsMap.put("1",Arrays.asList(""));
+        digitsMap.put("2",Arrays.asList("A","B","C"));
+        digitsMap.put("3",Arrays.asList("D","E","F"));
+        digitsMap.put("4",Arrays.asList("G","H","I"));
+        digitsMap.put("5",Arrays.asList("J","K","L"));
+        digitsMap.put("6",Arrays.asList("M","N","O"));
+        digitsMap.put("7",Arrays.asList("P","Q","R","S"));
+        digitsMap.put("8",Arrays.asList("T","U","V"));
+        digitsMap.put("9",Arrays.asList("W","X","Y","Z"));
+    }
+    
+
+
+
+
+
+
