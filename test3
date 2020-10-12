@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class test1 {
+    public static void main(String[] args) {
+        initDigitsMap();
+    }
+    public static void initDigitsMap(){
+        HashMap<String,ArrayList<String>> digitsMap=new HashMap<String,ArrayList<String>>();
+        ArrayList<String> a1 = new ArrayList<String>();
+        a1.add("");
+        ArrayList<String> c1 = new ArrayList<String>();
+        c1.addAll(Arrays.asList("A","B","C"));
+        ArrayList<String> d1 = new ArrayList<String>();
+        d1.addAll(Arrays.asList("D","E","F"));
+        ArrayList<String> e1 = new ArrayList<String>();
+        e1.addAll(Arrays.asList("G","H","I"));
+        ArrayList<String> f1 = new ArrayList<String>();
+        f1.addAll(Arrays.asList("J","K","L"));
+        ArrayList<String> g1 = new ArrayList<String>();
+        g1.addAll(Arrays.asList("M","N","O"));
+        ArrayList<String> h1 = new ArrayList<String>();
+        h1.addAll(Arrays.asList("P","Q","R","S"));
+        ArrayList<String> i1 = new ArrayList<String>();
+        i1.addAll(Arrays.asList("T","U","V"));
+        ArrayList<String> j1 = new ArrayList<String>();
+        j1.addAll(Arrays.asList("W","X","Y","Z"));
+        digitsMap.put("0",a1);
+        digitsMap.put("1",a1);
+        digitsMap.put("2",c1);
+        digitsMap.put("3",d1);
+        digitsMap.put("4",e1);
+        digitsMap.put("5",f1);
+        digitsMap.put("6",g1);
+        digitsMap.put("7",h1);
+        digitsMap.put("8",i1);
+        digitsMap.put("9",j1);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please input digits from 0 to 9:");
+        //输入数字1-9
+        String digits="";
+        while(true){
+            digits=sc.next();
+            if(!digits.matches("[0-9]{1,2}")){
+                System.out.println("输入不合法，请重新输入0-99的数字：");
+            }else{
+                break;
+            }
+        }
+        StringBuilder arrInput=new StringBuilder("Input:arr[] ={");
+        String[] arrStr=digits.split("");
+        ArrayList<String[]> dataList=new ArrayList<String[]>();
+
+        for(int i=0;i<arrStr.length;i++){
+            arrInput.append(arrStr[i]);
+            if(i<arrStr.length-1){
+                arrInput.append(",");
+            }
+            //先将多个list中的数据都添加到同一个集合中作为数据源
+            ArrayList<String> lettersList=digitsMap.get(arrStr[i]);
+            if(lettersList.size()>0){//没有数据的集合不能强行转换为数组
+//                System.out.print(lettersList);
+                String [] arr = new String[lettersList.size()];
+                int w = 0;
+                for(String str : lettersList){
+                    arr[w++] = str;
+                }
+//                String letterArr= (String)lettersList.toArray();
+                dataList.add(arr);
+            }
+        }
+        arrInput.append("}");
+        //递归实现多数组排列组合，并返回最终的排列集合
+        ArrayList<String[]> resultList= makeupLetters(dataList,0,null);
+        //打印输入内容
+        System.out.println(arrInput.toString());
+        System.out.print("Output:");
+        //打印输出排列组合结果
+        for(int i=0;i<resultList.size();i++){
+            String[] letterArr=resultList.get(i);
+            System.out.print(" ");
+            for(String s: letterArr){
+                System.out.print(s);
+            }
+        }
+    }
+
+
+    private static ArrayList<String[]> makeupLetters(ArrayList<String[]> dataList, int index, ArrayList<String[]> resultList){
+        if(index==dataList.size()){
+            return resultList;
+        }
+
+        ArrayList<String[]> resultList0=new ArrayList<String[]>();
+        if(index==0){//第一列数组默认有多少个字母就添加多少个排列数据
+            String[] dataArr=dataList.get(0);
+            for(String s : dataArr){
+                resultList0.add(new String[]{s});
+            }
+        }else{
+            String[] dataArr=dataList.get(index);
+            for(String[] dataArr0: resultList){
+                for(String s : dataArr){
+                    //复制数组并扩充新元素
+                    String[] dataArrCopy=new String[dataArr0.length+1];
+                    System.arraycopy(dataArr0, 0, dataArrCopy, 0, dataArr0.length);
+                    dataArrCopy[dataArrCopy.length-1]=s;
+                    //追加到结果集
+                    resultList0.add(dataArrCopy);
+                }
+            }
+        }
+        return makeupLetters(dataList,++index,resultList0);
+    }
+}
